@@ -20,6 +20,7 @@ export const shootConfetti = () => {
     const shoot = confetti.create(canvas,{
         resize: true
     })
+    console.log(shoot)
     shoot({
         origin:{
             x:1,
