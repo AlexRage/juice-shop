@@ -43,6 +43,7 @@ export class AdministrationComponent implements OnInit {
 
   findAllUsers () {
     this.userService.find().subscribe((users) => {
+      console.log(users)
       this.userDataSource = users
       this.userDataSourceHidden = users
       for (const user of this.userDataSource) {
