@@ -62,6 +62,7 @@ export class AccountingComponent implements AfterViewInit, OnDestroy {
 
   loadProducts () {
     this.productSubscription = this.productService.search('').subscribe((tableData: any) => {
+      console.log(tableData)
       this.tableData = tableData
       this.dataSource = new MatTableDataSource<Element>(this.tableData)
       this.dataSource.paginator = this.paginator
