@@ -25,6 +25,11 @@ export class BasketComponent {
     this.ngZone.run(async () => await this.router.navigate(['/address/select']))
   }
 
+  concatenate() {
+    let args = Array.prototype.slice.call(arguments);
+    return args.join(', ');
+  }
+
   getProductCount (total) {
     this.productCount = total
   }
