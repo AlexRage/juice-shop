@@ -48,6 +48,7 @@ export class AddressComponent implements OnInit {
 
   load () {
     this.addressService.get().subscribe((addresses) => {
+      console.log(addresses)
       this.addressExist = addresses.length
       this.storedAddresses = addresses
       this.dataSource = new MatTableDataSource<Element>(this.storedAddresses)
