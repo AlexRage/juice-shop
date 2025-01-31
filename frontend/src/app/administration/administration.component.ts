@@ -53,6 +53,7 @@ export class AdministrationComponent implements OnInit {
       this.userDataSource = new MatTableDataSource(this.userDataSource)
       this.userDataSource.paginator = this.paginatorUsers
       this.resultsLengthUser = users.length
+      console.log(users.length)
     }, (err) => {
       this.error = err
       console.log(this.error)
