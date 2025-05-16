@@ -63,7 +63,7 @@ export class AddressComponent implements OnInit {
       this.addressId = id
     } else {
       this.emitSelection.emit(undefined)
-      this.addressId = undefined
+      this.addressId = "lol"
     }
   }
 
