@@ -185,6 +185,23 @@ function createAddresses (UserId: number, addresses: Address[]) {
   })
 }
 
+function createAddresses2 (UserId: number, addresses: Address[]) {
+  addresses.map(async (address) => {
+    return await AddressModel.create({
+      UserId: UserId,
+      country: address.country,
+      fullName: address.fullName,
+      mobileNum: address.mobileNum,
+      zipCode: address.zipCode,
+      streetAddress: address.streetAddress,
+      city: address.city,
+      state: address.state ? address.state : null
+    }).catch((err: unknown) => {
+      logger.error(`Could not create address: ${utils.getErrorMessage(err)}`)
+    })
+  })
+}
+
 async function createCards (UserId: number, cards: Card[]) {
   return await Promise.all(cards.map(async (card) => {
     return await CardModel.create({
