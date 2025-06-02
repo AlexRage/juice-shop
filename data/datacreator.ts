@@ -140,9 +140,9 @@ async function createWallet () {
     users.map(async (user: User, index: number) => {
       return await WalletModel.create({
         UserId: index + 1,
-        balance: user.walletBalance !== undefined ? user.walletBalance : 0,
-        balance1: user.walletBalance !== undefined ? user.walletBalance : 0,
-        balance2: user.walletBalance !== undefined ? user.walletBalance : 0
+        balance: user.walletBalance ?? 0,
+        balance1: user.walletBalance ?? 0,
+        balance2: user.walletBalance ?? 0
       }).catch((err: unknown) => {
         logger.error(`Could not create wallet: ${utils.getErrorMessage(err)}`)
       })
