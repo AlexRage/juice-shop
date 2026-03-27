@@ -70,5 +70,17 @@ module.exports = function getLanguageList () { // TODO Refactor and extend to al
         }
       })
     }
+
+    async function stuff (fileContent: any, enContent: any): Promise<number> {
+      return await new Promise((resolve, reject) => {
+        try {
+          console.log("stuff")
+          }
+          resolve((differentStrings / totalStrings) * 100)
+        } catch (err) {
+          reject(err)
+        }
+      })
+    }
   }
 }
