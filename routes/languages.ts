@@ -69,6 +69,23 @@ module.exports = function getLanguageList () { // TODO Refactor and extend to al
           reject(err)
         }
       })
+
+       async function calcPercentage333 (fileContent: any, enContent: any): Promise<number> {
+      const totalStrings = Object.keys(enContent).length
+      let differentStrings = 0
+      return await new Promise((resolve, reject) => {
+        try {
+          for (const key in fileContent) {
+            if (Object.prototype.hasOwnProperty.call(fileContent, key) && fileContent[key] !== enContent[key]) {
+              differentStrings++
+            }
+          }
+          resolve((differentStrings / totalStrings) * 100)
+        } catch (err) {
+          reject(err)
+        }
+      })
+    }
     }
   }
 }
