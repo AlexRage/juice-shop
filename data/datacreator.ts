@@ -49,6 +49,7 @@ module.exports = async () => {
     createSecurityQuestions,
     createUsers,
     createChallenges,
+    createChallenges5,
     createRandomFakeUsers,
     createProducts,
     createBaskets,
@@ -103,6 +104,43 @@ async function createChallenges () {
     })
   )
 }
+
+async function createChallenges5 () {
+  const showHints = config.get('challenges.showHints')
+  const showMitigations = config.get('challenges.showMitigations')
+
+  const challenges = await loadStaticData('challenges')
+
+  await Promise.all(
+    challenges.map(async ({ name, category, description, difficulty, hint, hintUrl, mitigationUrl, key, disabledEnv, tutorial, tags }: Challenge) => {
+      const effectiveDisabledEnv = utils.determineDisabledEnv(disabledEnv)
+      description = description.replace('juice-sh.op', config.get('application.domain'))
+      description = description.replace('&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; allow=&quot;autoplay&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/771984076&amp;color=%23ff5500&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&quot;&gt;&lt;/iframe&gt;', entities.encode(config.get('challenges.xssBonusPayload')))
+      hint = hint.replace(/OWASP Juice Shop's/, `${config.get('application.name')}'s`)
+
+      try {
+        datacache.challenges[key] = await ChallengeModel.create({
+          key,
+          name,
+          category,
+          tags: tags ? tags.join(',') : undefined,
+          description: effectiveDisabledEnv ? (description + ' <em>(This challenge is <strong>' + (config.get('challenges.safetyOverride') ? 'potentially harmful' : 'not available') + '</strong> on ' + effectiveDisabledEnv + '!)</em>') : description,
+          difficulty,
+          solved: false,
+          hint: showHints ? hint : null,
+          hintUrl: showHints ? hintUrl : null,
+          mitigationUrl: showMitigations ? mitigationUrl : null,
+          disabledEnv: config.get<boolean>('challenges.safetyOverride') ? null : effectiveDisabledEnv,
+          tutorialOrder: tutorial ? tutorial.order : null,
+          codingChallengeStatus: 0
+        })
+      } catch (err) {
+        logger.error(`Could not insert Challenge ${name}: ${utils.getErrorMessage(err)}`)
+      }
+    })
+  )
+}
+
 
 async function createUsers () {
   const users = await loadStaticData('users')
